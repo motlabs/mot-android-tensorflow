@@ -1,2 +1,2 @@
 # android-tensorflow
-Android project TensorFlow lite
+Android project for TensorFlow lite
