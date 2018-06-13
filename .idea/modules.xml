@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/android-tensorflow.iml" filepath="$PROJECT_DIR$/android-tensorflow.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/mot-android-tensorflow.iml" filepath="$PROJECT_DIR$/.idea/mot-android-tensorflow.iml" />
     </modules>
   </component>
 </project>

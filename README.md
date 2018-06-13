@@ -1,7 +1,7 @@
-# android-tensorflow
+# mot-android-tensorflow
 TensorFlow를 적용하기 위한 Android Project 구성
 
-WIP
+
 
 # 진행사항
 * 1주차(2018.02.01) - [MoT 위해서 알아야할 안드로이드 개념들](https://docs.google.com/document/d/1ddP-4kuiUmyYqdfUixzGld7wUUpCueqSO8fEH_EjSoo/edit#bookmark=id.x9rbhyrc1t0c)
