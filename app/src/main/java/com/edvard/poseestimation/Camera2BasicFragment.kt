@@ -23,19 +23,8 @@ import android.app.Fragment
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
-import android.graphics.ImageFormat
-import android.graphics.Matrix
-import android.graphics.Point
-import android.graphics.RectF
-import android.graphics.SurfaceTexture
-import android.hardware.camera2.CameraAccessException
-import android.hardware.camera2.CameraCaptureSession
-import android.hardware.camera2.CameraCharacteristics
-import android.hardware.camera2.CameraDevice
-import android.hardware.camera2.CameraManager
-import android.hardware.camera2.CaptureRequest
-import android.hardware.camera2.CaptureResult
-import android.hardware.camera2.TotalCaptureResult
+import android.graphics.*
+import android.hardware.camera2.*
 import android.media.ImageReader
 import android.os.Bundle
 import android.os.Handler
@@ -44,18 +33,11 @@ import android.support.v13.app.FragmentCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.util.Size
-import android.view.LayoutInflater
-import android.view.Surface
-import android.view.TextureView
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import java.io.IOException
-import java.util.ArrayList
-import java.util.Arrays
-import java.util.Collections
-import java.util.Comparator
+import java.util.*
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 
@@ -383,22 +365,26 @@ class Camera2BasicFragment : Fragment(), FragmentCompat.OnRequestPermissionsResu
           maxPreviewHeight = displaySize.x
         }
 
-        if (maxPreviewWidth > MAX_PREVIEW_WIDTH) {
-          maxPreviewWidth = MAX_PREVIEW_WIDTH
-        }
+        // Previous code
+//        if (maxPreviewWidth > MAX_PREVIEW_WIDTH) {
+//          maxPreviewWidth = MAX_PREVIEW_WIDTH
+//        }
+//
+//        if (maxPreviewHeight > MAX_PREVIEW_HEIGHT) {
+//          maxPreviewHeight = MAX_PREVIEW_HEIGHT
+//        }
+//        previewSize = chooseOptimalSize(
+//            map.getOutputSizes(SurfaceTexture::class.java),
+//            rotatedPreviewWidth,
+//            rotatedPreviewHeight,
+//            maxPreviewWidth,
+//            maxPreviewHeight,
+//            largest
+//        )
 
-        if (maxPreviewHeight > MAX_PREVIEW_HEIGHT) {
-          maxPreviewHeight = MAX_PREVIEW_HEIGHT
-        }
-
-        previewSize = chooseOptimalSize(
-            map.getOutputSizes(SurfaceTexture::class.java),
-            rotatedPreviewWidth,
-            rotatedPreviewHeight,
-            maxPreviewWidth,
-            maxPreviewHeight,
-            largest
-        )
+        // Modified code
+        val size = if (rotatedPreviewWidth > rotatedPreviewHeight) rotatedPreviewHeight else rotatedPreviewWidth
+        previewSize = Size(size, size)
 
         // We fit the aspect ratio of TextureView to the size of preview we picked.
         val orientation = resources.configuration.orientation
