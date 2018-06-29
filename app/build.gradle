@@ -59,6 +59,7 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+    buildToolsVersion '27.0.3'
 }
 
 repositories {
