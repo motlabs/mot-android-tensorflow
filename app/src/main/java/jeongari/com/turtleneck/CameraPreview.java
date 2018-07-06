@@ -2,6 +2,10 @@ package jeongari.com.turtleneck;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -9,15 +13,21 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.List;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback{
+
+    public static final String TAG = CameraPreview.class.getSimpleName();
 
     private Camera mCamera;
     public List<Camera.Size> listPreviewSizes;
     private Camera.Size previewSize;
     private Context context;
+
+    Bitmap captureImg;
 
     // SurfaceView 생성자
     public CameraPreview(Context context, AttributeSet attrs) {
@@ -29,7 +39,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
         listPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
 
+
     }
+
+
 
     //  SurfaceView 생성시 호출
     @Override
@@ -71,6 +84,40 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             });
         } catch (IOException e) {
         }
+
+        // 프리뷰에 있는 이미지를 비트맵으로 반환
+
+        mCamera.setPreviewCallback(new Camera.PreviewCallback() {
+
+            public void onPreviewFrame(byte[] data, Camera camera) {
+
+                Camera.Parameters params = mCamera.getParameters();
+
+                int w = params.getPreviewSize().width;
+
+                int h = params.getPreviewSize().height;
+
+                int format = params.getPreviewFormat();
+
+                YuvImage image = new YuvImage(data, format, w, h, null);
+
+
+
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+                Rect area = new Rect(0, 0, w, h);
+
+                image.compressToJpeg(area, 50, out);
+
+                captureImg = BitmapFactory.decodeByteArray(out.toByteArray(), 0, out.size());
+
+                //TODO: bitmap Array를 Byte Buffer 서식에 맞게 변환
+
+                Log.d(TAG, bitmapToArray(captureImg).toString());
+
+            }
+
+        });
     }
 
     // SurfaceView 의 크기가 바뀌면 호출
@@ -124,11 +171,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             // 카메라 미리보기를 종료한다.
             mCamera.stopPreview();
             mCamera.release();
+
+            mCamera.setPreviewCallback(null);
             mCamera = null;
         }
     }
 
-    // 화면이 회전할 때 화면 사이즈를 구한다.
+    // 화면이 회전할 때 화면 사이즈를 구한다
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
@@ -175,5 +224,15 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
 
         return optimalSize;
+    }
+
+    public byte[] bitmapToArray(Bitmap bmp){
+
+        final int lnth= bmp.getByteCount();
+        ByteBuffer dst= ByteBuffer.allocate(lnth);
+        bmp.copyPixelsToBuffer( dst);
+        byte[] barray=dst.array();
+
+        return barray;
     }
 }
