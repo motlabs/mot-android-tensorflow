@@ -10,7 +10,7 @@
 ## TODO - Working
 
 - ImageClassifier <br/>
-구글이 제시한 java 예제를 보고 따라 만들어보려고 했으나 어려움을 많았음😭
+구글이 제시한 java 예제를 보고 따라 만들어보려고 했으나 어려움이 많았음😭
 
 - ImageClassifierPoseEstimation <br/>
 ImageClassifier를 상속 받아서 PoseEstimation CPM 모델에 맞게 구체화
