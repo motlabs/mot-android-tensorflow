@@ -101,8 +101,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
                 YuvImage image = new YuvImage(data, format, w, h, null);
 
-
-
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
 
                 Rect area = new Rect(0, 0, w, h);
@@ -113,7 +111,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
                 //TODO: bitmap Array를 Byte Buffer 서식에 맞게 변환
 
-                Log.d(TAG, bitmapToArray(captureImg).toString());
+                Log.d(TAG + " Byte String", bitmapToArray(captureImg).toString());
 
             }
 
@@ -168,11 +166,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         if(mCamera != null){
+
+            mCamera.setPreviewCallback(null);
             // 카메라 미리보기를 종료한다.
             mCamera.stopPreview();
             mCamera.release();
 
-            mCamera.setPreviewCallback(null);
             mCamera = null;
         }
     }
